@@ -1,0 +1,39 @@
+<mat-card *ngIf="resultType.toString() === '0'">
+  <h4>Congrats, you had that correct!</h4>
+  <h5>You now have {{_gameService.getPoints()}} points</h5>
+
+  <button mat-raised-button color="accent" (click)="next()">Next question</button>
+</mat-card>
+
+<mat-card *ngIf="result.type.toString() === '1'">
+  <h4>Oh, that was wrong.</h4>
+  <h5>{{result.correct}} would have been the correct answer.</h5>
+  <h5>You have {{_gameService.getPoints()}} points</h5>
+
+  <button mat-raised-button color="accent" (click)="startOver()">Try again</button>
+</mat-card>
+
+<mat-card *ngIf="result.type.toString() === '2'">
+  <h4>Snap, you ran out of time.</h4>
+  <h5>{{result.correct}} would have been the correct answer.</h5>
+  <h5>You have {{_gameService.getPoints()}} points</h5>
+
+  <button mat-raised-button color="accent" (click)="startOver()">Try again</button>
+</mat-card>
+
+<mat-card *ngIf="result.type.toString() === '3'">
+  <h4>Awesome you won!</h4>
+  <h5>You have {{_gameService.getPoints()}} points</h5>
+
+  <div class="spacing-container">
+    Enter yourself into the leaderboard:
+    <mat-form-field>
+      <mat-label>Your name</mat-label>
+      <input matInput [(ngModel)]="user">
+    </mat-form-field>
+
+    <button mat-raised-button color="accent" (click)="enterLeaderboard()">enter</button>
+  </div>
+
+  <button mat-raised-button color="accent" (click)="startOver()">Back to home</button>
+</mat-card>

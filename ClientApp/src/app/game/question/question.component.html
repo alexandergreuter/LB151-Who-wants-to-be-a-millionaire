@@ -1,0 +1,19 @@
+<mat-card>
+  <mat-spinner *ngIf="question === undefined"></mat-spinner>
+  <div *ngIf="question !== null">
+    <mat-progress-bar mode="determinate" [value]="timeLeft"></mat-progress-bar>
+    <h1>{{question.name}}</h1>
+    <p>{{_gameService.getPoints()}} points</p>
+    <p>{{truncate(timeLeft * timePerQuestion / 100)}}s left</p>
+    <p>{{truncate((question.wrong / (question.wrong + question.right)) * 100)}}% of people get this wrong</p>
+    <button style="width: 90%" mat-raised-button color="secondary" (click)="useJoker()" [disabled]="jokerUsed">Use the
+      Joker
+    </button>
+    <mat-grid-list cols="2" rowHeight="1:0.1">
+      <mat-grid-tile *ngFor="let answer of question.answers">
+        <button style="width: 90%" mat-raised-button color="primary" (click)="next(answer)"
+                [disabled]="disableAllButtons || disabledButtons.includes(answer)">{{answer}}</button>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+</mat-card>

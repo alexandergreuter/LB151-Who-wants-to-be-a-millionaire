@@ -1,0 +1,122 @@
+<mat-card *ngIf="!loggedIn">
+  <h3>Please Login</h3>
+  <mat-card-content class="spacing-container">
+
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input type="email" matInput [(ngModel)]="email" required>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Password</mat-label>
+      <input type="password" matInput [(ngModel)]="password" required>
+    </mat-form-field>
+
+    <button mat-raised-button (click)="login()">Login</button>
+    <br>
+    <mat-error>{{loginMessage}}</mat-error>
+  </mat-card-content>
+
+  <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+</mat-card>
+
+<div *ngIf="loggedIn">
+  <mat-card>
+    <h3>Categories</h3>
+
+    <mat-card-content class="spacing-container">
+      <mat-form-field>
+        <mat-label>A Category</mat-label>
+        <input matInput [(ngModel)]="newCategory">
+      </mat-form-field>
+
+      <button mat-raised-button (click)="addCategory()">add</button>
+    </mat-card-content>
+
+    <mat-list>
+      <mat-list-item *ngFor="let category of categories" class="spacing-container">
+        <div class="spacing-container">
+          <button mat-button (click)="managed = category">manage</button>
+          <button mat-button (click)="deleteCategory(category)" color="warn">delete</button>
+        </div>
+
+        <span>{{category.name}}</span>
+      </mat-list-item>
+    </mat-list>
+
+    <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+  </mat-card>
+
+  <br>
+
+  <mat-card *ngIf="managed != null || undefined">
+    <h3>Manage: {{managed.name}}</h3>
+
+    <mat-card-content>
+      <mat-list>
+        <div class="spacing-container">
+          <mat-form-field>
+            <mat-label>A Question</mat-label>
+            <input matInput [(ngModel)]="newQuestion.name">
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Answer 1</mat-label>
+            <input matInput [(ngModel)]="newQuestion.answers[0]">
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Answer 2</mat-label>
+            <input matInput [(ngModel)]="newQuestion.answers[1]">
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Answer 3</mat-label>
+            <input matInput [(ngModel)]="newQuestion.answers[2]">
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Answer 4</mat-label>
+            <input matInput [(ngModel)]="newQuestion.answers[3]">
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Correct Answer</mat-label>
+            <mat-select [(value)]="newQuestion.correct" placeholder="select">
+              <mat-option *ngFor="let answer of newQuestion.answers; let i = index" [attr.data-index]="i"
+                          [value]="i">{{i + 1}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <button mat-raised-button (click)="addQuestion()">add</button>
+          <mat-error *ngIf="managedError !== null">{{managedError}}</mat-error>
+        </div>
+
+        <mat-list-item *ngFor="let question of managed.questions" class="spacing-container">
+          <button mat-button color="warn" (click)="deleteQuestion(question)">delete</button>
+          <span><b>{{question.name}}:</b></span>
+          <span *ngFor="let answer of question.answers">{{answer}}</span>
+          <span>correct: {{question.correct}}</span>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+
+    <div class="spacing-container">
+      <button mat-button color="primary" (click)="applyChanges()">apply changes</button>
+      <button mat-button color="warn" (click)="managed = null">discard changes</button>
+    </div>
+  </mat-card>
+
+  <br>
+
+  <mat-card>
+    <h3>Leaderboard</h3>
+    <mat-list>
+      <mat-list-item *ngFor="let entry of leaderboard; let i = index" [attr.data-index]="i">
+        <button mat-button (click)="deleteLeaderboardEntry(entry)" color="warn">delete</button>
+        {{i + 1}} {{truncate(entry.score / entry.duration)}} {{entry.user}} {{entry.timestamp}} {{entry.score}} {{truncate(entry.duration)}} {{entry.category.name}}
+      </mat-list-item>
+    </mat-list>
+  </mat-card>
+</div>

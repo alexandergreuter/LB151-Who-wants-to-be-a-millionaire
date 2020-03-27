@@ -1,0 +1,9 @@
+<p>Select a category to play</p>
+
+<div style="display: flex" class="spacing-container">
+  <mat-card *ngFor="let category of categories">
+    <h4>{{ category.name }}</h4>
+    <button mat-raised-button color="accent" (click)="next(category)">Select</button>
+  </mat-card>
+</div>
+

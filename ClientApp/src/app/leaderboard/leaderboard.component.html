@@ -1,0 +1,6 @@
+<h1>The Leaderboard</h1>
+
+<mat-list>
+  <mat-list-item *ngFor="let entry of leaderboard; let i = index" [attr.data-index]="i">
+    {{i + 1}} {{truncate(entry.score / entry.duration)}} {{entry.user}} {{entry.timestamp}} {{entry.score}} {{truncate(entry.duration)}} {{entry.category.name}}</mat-list-item>
+</mat-list>
